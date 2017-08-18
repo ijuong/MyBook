@@ -31,7 +31,9 @@ class BookDetailViewController: UIViewController {
         self.bookWriterLabel.text = newBook.writer
         self.bookCoverImageView.image = newBook.coverImage
         self.bookPublisherLabel.text = newBook.publisher
-        self.bookPriceLabel.text = String(newBook.price)
+        if let bookPrice = newBook.price {
+            self.bookPriceLabel.text = String(bookPrice)
+        }
         self.bookDescriptTextView.text = newBook.description
         
         //title

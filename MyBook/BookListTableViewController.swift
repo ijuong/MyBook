@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class BookListTableViewController: UITableViewController {
+class BookListTableViewController: UITableViewController, AddBookDelegate {
     
     var books:[Book] = Array()
     
@@ -38,10 +38,20 @@ class BookListTableViewController: UITableViewController {
                          price: 18000,
                          description: "[예제가 가득한 iOS 프로그래밍]은 현장에서 활약하는 iOS 앱 개발자 또는 초보자 탈출을 목표로 하는 개발자를 위해 iOS 애플리케이션 개발에서 조심해야 할 내용이나 알고 있는 내용을 쉽게 참고할 수 있는 내용을 중심으로 정리한 “팁 모음집”이다",
                          url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788956746371&orderClick=LAG&Kc=")
+        let book4 = Book(title: "iPhone SDK 튜토리얼",
+                         writer: nil,
+                         publisher: nil,
+                         coverImage: nil,
+                         price: nil,
+                         description: nil,
+                         url: nil)
+        let book5 = Book(title: "Hello", writer: "이주용")
         
         self.books.append(book1)
         self.books.append(book2)
         self.books.append(book3)
+        self.books.append(book4)
+        self.books.append(book5)
     }
 
     override func didReceiveMemoryWarning() {
@@ -65,24 +75,32 @@ class BookListTableViewController: UITableViewController {
         //기본cell
         let cell = tableView.dequeueReusableCell(withIdentifier: "reuseIdentifier", for: indexPath)
         
-        //let book = self.books[indexPath.row]
-        //cell.textLabel?.text = book.title
-        //cell.detailTextLabel?.text = book.writer
-        //cell.imageView?.image = book.coverImage
-        
         //bookcell
         if let bookCell = cell as? BookTableViewCell {
             let book = self.books[indexPath.row]
             
             let numFormatter:NumberFormatter = NumberFormatter()
             numFormatter.numberStyle = NumberFormatter.Style.decimal
-            let price = book.price
-            let priceStr = numFormatter.string(from: NSNumber(integerLiteral:price))
-            
+            if let price = book.price {
+                let priceStr = numFormatter.string(from: NSNumber(integerLiteral:price))
+                bookCell.bookPriceLabel.text = priceStr
+            } else {
+                bookCell.bookPriceLabel.text = "가격없음"
+            }
             bookCell.bookTitleLabel.text = book.title
-            bookCell.bookWriterLabel.text = book.writer
-            bookCell.bookPriceLabel.text = priceStr
+            
+            if let writer = book.writer {
+                bookCell.bookWriterLabel.text = writer
+            } else {
+                bookCell.bookWriterLabel.text = "작가미상"
+            }
+            
             bookCell.bookImageView.image = book.coverImage
+//            if let image = book.coverImage {
+//                bookCell.bookImageView.image = image
+//            } else {
+//                bookCell.bookImageView.image = UIImage(named: "find")
+//            }
             
             return bookCell
         }
@@ -127,16 +145,29 @@ class BookListTableViewController: UITableViewController {
 
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let cell = sender as? UITableViewCell
-        let vc = segue.destination as? BookDetailViewController
         
-        guard let selectedCell = cell, let detailVC = vc else {
-            return
+        if segue.identifier == "addvc" {
+            if let addVC = segue.destination as? AddBookViewController {
+                addVC.delegate = self
+            }
+        } else if segue.identifier == "detailvc" {
+         
+            let cell = sender as? UITableViewCell
+            let vc = segue.destination as? BookDetailViewController
+            
+            guard let selectedCell = cell, let detailVC = vc else {
+                return
+            }
+            
+            if let idx = self.tableView.indexPath(for: selectedCell) {
+                detailVC.book = self.books[idx.row]
+            }
         }
-        
-        if let idx = self.tableView.indexPath(for: selectedCell) {
-            detailVC.book = self.books[idx.row]
-        }
+    }
+    
+    func sendNewBook(book:Book) {
+        self.books.append(book)
+        self.tableView.reloadData()
     }
 }
 
