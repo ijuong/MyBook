@@ -13,45 +13,52 @@ class BookListTableViewController: UITableViewController, AddBookDelegate {
     
     var books:[Book] = Array()
     
+    func getFilePath(withFileName fileName:String) -> String {
+        let dirPath = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
+        let docDir = dirPath[0] as NSString
+        let filePath = docDir.appendingPathComponent(fileName)
+        return filePath
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let book1 = Book(title: "핵심만 골라 배우는 iOS 9 프로그래밍",
-                         writer: "닐 스미스",
-                         publisher: "제이펍",
-                         coverImage: UIImage(named:"001")!,
-                         price: 32400,
-                         description: "핵심만 골라 배우는 iOS 9 프로그래밍]은 iOS 9 SDK와 Xcode 7, 그리고 스위프트 2 프로그래밍 언어를 이용하여 iOS 애플리케이션을 생성하는 데 필요한 기술을 가르치는 데목적을 둔다",
-                         url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791185890524&orderClick=LAG&Kc=")
-        let book2 = Book(title: "iOS 해킹과 방어",
-                         writer: "조나단 지드자스키",
-                         publisher: "에이콘",
-                         coverImage: UIImage(named:"002")!,
-                         price: 31500,
-                         description: "보안 전문가와 아이폰 개발자를 위한『iOS 해킹과 방어』. iOS 보안의 불완전함을 알기 쉽게 설명하고 개발자 입장에서 이를 어떻게 보완할 수 있는지 친절하게 설명한 책이다.",
-                         url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788960773370&orderClick=LAG&Kc=")
-        let book3 = Book(title: "예제가 가득한 iOS 프로그래밍",
-                         writer: "Zhao Wenlai",
-                         publisher: "정보문화사",
-                         coverImage: UIImage(named:"003")!,
-                         price: 18000,
-                         description: "[예제가 가득한 iOS 프로그래밍]은 현장에서 활약하는 iOS 앱 개발자 또는 초보자 탈출을 목표로 하는 개발자를 위해 iOS 애플리케이션 개발에서 조심해야 할 내용이나 알고 있는 내용을 쉽게 참고할 수 있는 내용을 중심으로 정리한 “팁 모음집”이다",
-                         url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788956746371&orderClick=LAG&Kc=")
-        let book4 = Book(title: "iPhone SDK 튜토리얼",
-                         writer: nil,
-                         publisher: nil,
-                         coverImage: nil,
-                         price: nil,
-                         description: nil,
-                         url: nil)
-        let book5 = Book(title: "Hello", writer: "이주용")
         
-        self.books.append(book1)
-        self.books.append(book2)
-        self.books.append(book3)
-        self.books.append(book4)
-        self.books.append(book5)
+        let filePath = self.getFilePath(withFileName: "books")
+        let fileManager = FileManager.default
+        if fileManager.fileExists(atPath: filePath) {
+            if let books = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? [Book] {
+                self.books.append(contentsOf: books)
+            }
+        } else {
+            let book1 = Book(title: "핵심만 골라 배우는 iOS 9 프로그래밍",
+                             writer: "닐 스미스",
+                             publisher: "제이펍",
+                             coverImage: UIImage(named:"001")!,
+                             price: 32400,
+                             desc: "핵심만 골라 배우는 iOS 9 프로그래밍]은 iOS 9 SDK와 Xcode 7, 그리고 스위프트 2 프로그래밍 언어를 이용하여 iOS 애플리케이션을 생성하는 데 필요한 기술을 가르치는 데목적을 둔다",
+                             url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9791185890524&orderClick=LAG&Kc=")
+            let book2 = Book(title: "iOS 해킹과 방어",
+                             writer: "조나단 지드자스키",
+                             publisher: "에이콘",
+                             coverImage: UIImage(named:"002")!,
+                             price: 31500,
+                             desc: "보안 전문가와 아이폰 개발자를 위한『iOS 해킹과 방어』. iOS 보안의 불완전함을 알기 쉽게 설명하고 개발자 입장에서 이를 어떻게 보완할 수 있는지 친절하게 설명한 책이다.",
+                             url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788960773370&orderClick=LAG&Kc=")
+            let book3 = Book(title: "예제가 가득한 iOS 프로그래밍",
+                             writer: "Zhao Wenlai",
+                             publisher: "정보문화사",
+                             coverImage: UIImage(named:"003")!,
+                             price: 18000,
+                             desc: "[예제가 가득한 iOS 프로그래밍]은 현장에서 활약하는 iOS 앱 개발자 또는 초보자 탈출을 목표로 하는 개발자를 위해 iOS 애플리케이션 개발에서 조심해야 할 내용이나 알고 있는 내용을 쉽게 참고할 수 있는 내용을 중심으로 정리한 “팁 모음집”이다",
+                             url:"http://www.kyobobook.co.kr/product/detailViewKor.laf?ejkGb=KOR&mallGb=KOR&barcode=9788956746371&orderClick=LAG&Kc=")
+            
+            self.books.append(book1)
+            self.books.append(book2)
+            self.books.append(book3)
+            
+            let filePath = self.getFilePath(withFileName: "books")
+            NSKeyedArchiver.archiveRootObject(self.books, toFile: filePath)
+        }
     }
 
     override func didReceiveMemoryWarning() {

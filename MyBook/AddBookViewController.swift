@@ -48,7 +48,7 @@ class AddBookViewController: UIViewController {
                             publisher: publisherTextField.text,
                             coverImage: coverImageView.image,
                             price: optPrice,
-                            description: descriptionTextView.text,
+                            desc: descriptionTextView.text,
                             url: urlTextField.text)
             
             if let prevVC = delegate {

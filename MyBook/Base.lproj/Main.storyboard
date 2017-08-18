@@ -274,7 +274,7 @@
             </objects>
             <point key="canvasLocation" x="2670" y="-559"/>
         </scene>
-        <!--Title-->
+        <!--구매-->
         <scene sceneID="QAc-AS-n08">
             <objects>
                 <viewController id="cpP-ov-yf2" customClass="WebViewController" customModule="MyBook" customModuleProvider="target" sceneMemberID="viewController">
@@ -299,7 +299,7 @@
                             <constraint firstItem="xKR-HR-vH2" firstAttribute="top" secondItem="Jvf-nz-H7N" secondAttribute="top" id="yaX-PR-WtA"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Title" id="H8i-2M-HbN"/>
+                    <navigationItem key="navigationItem" title="구매" id="H8i-2M-HbN"/>
                     <connections>
                         <outlet property="bookWebView" destination="xKR-HR-vH2" id="ek7-W2-pbO"/>
                     </connections>
