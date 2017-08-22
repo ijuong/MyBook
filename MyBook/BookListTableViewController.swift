@@ -27,6 +27,7 @@ class BookListTableViewController: UITableViewController, AddBookDelegate {
         let fileManager = FileManager.default
         if fileManager.fileExists(atPath: filePath) {
             if let books = NSKeyedUnarchiver.unarchiveObject(withFile: filePath) as? [Book] {
+                //print("@@" + filePath)
                 self.books.append(contentsOf: books)
             }
         } else {

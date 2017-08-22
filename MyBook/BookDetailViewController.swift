@@ -34,7 +34,7 @@ class BookDetailViewController: UIViewController {
         if let bookPrice = newBook.price {
             self.bookPriceLabel.text = String(bookPrice)
         }
-        self.bookDescriptTextView.text = newBook.description
+        self.bookDescriptTextView.text = newBook.desc
         
         //title
         self.navigationItem.title = newBook.title
